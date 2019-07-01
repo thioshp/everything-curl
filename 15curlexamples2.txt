@@ -1,0 +1,1275 @@
+   #The Geek Stuff feed The Geek
+   Stuff » 15 Practical Linux cURL
+   Command Examples (cURL Download
+   Examples) Comments Feed
+   alternate alternate
+
+   The Geek Stuff
+   [INS: :INS]
+   ≡ Menu
+     * Home
+     * Free eBook
+     * Start Here
+     * Contact
+     * About
+
+15 Practical Linux cURL Command
+Examples (cURL Download Examples)
+
+   by Lakshmanan Ganapathy
+   on April 11, 2012
+
+   IFRAME:
+   https://www.facebook.com/plugin
+   s/like.php?href=https%3A%2F%2Fw
+   ww.thegeekstuff.com%2F2012%2F04
+   %2Fcurl-examples%2F&send=false&
+   layout=button_count&width=450&s
+   how_faces=false&action=like&col
+   orscheme=light&font&height=21
+
+   Tweet
+
+   cURL is a software package
+   which consists of command line
+   tool and a library for
+   transferring data using URL
+   syntax.
+
+   cURL supports various protocols
+   like, DICT, FILE, FTP, FTPS,
+   Gopher, HTTP, HTTPS, IMAP,
+   IMAPS, LDAP, LDAPS, POP3,
+   POP3S, RTMP, RTSP, SCP, SFTP,
+   SMTP, SMTPS, Telnet and TFTP.
+
+   This article provides 15
+   practical cURL usage examples.
+
+1. Download a Single File
+
+   The following command will get
+   the content of the URL and
+   display it in the STDOUT (i.e
+   on your terminal).
+$ curl http://www.centos.org
+
+   To store the output in a file,
+   you an redirect it as shown
+   below. This will also display
+   some additional download
+   statistics.
+$ curl http://www.centos.org > centos-or
+g.html
+  % Total    % Received % Xferd  Average
+ Speed   Time    Time     Time  Current
+                                 Dload
+Upload   Total   Spent    Left  Speed
+100 27329    0 27329    0     0   104k
+    0 --:--:-- --:--:-- --:--:--  167k
+
+2. Save the cURL Output to a file
+
+   We can save the result of the
+   curl command to a file by using
+   -o/-O options.
+     * -o (lowercase o) the result
+       will be saved in the
+       filename provided in the
+       command line
+     * -O (uppercase O) the
+       filename in the URL will be
+       taken and it will be used
+       as the filename to store
+       the result
+
+$ curl -o mygettext.html http://www.gnu.
+org/software/gettext/manual/gettext.html
+
+   Now the page gettext.html will
+   be saved in the file named
+   ‘mygettext.html’. You can also
+   note that when running curl
+   with -o option, it displays the
+   progress meter for the download
+   as follows.
+
+   [INS: :INS]
+
+  % Total    % Received % Xferd  Average
+ Speed   Time    Time     Time  Current
+                                 Dload
+Upload   Total   Spent    Left  Speed
+ 66 1215k   66  805k    0     0  33060
+    0  0:00:37  0:00:24  0:00:13 45900
+100 1215k  100 1215k    0     0  39474
+    0  0:00:31  0:00:31 --:--:-- 68987
+
+   When you use curl -O (uppercase
+   O), it will save the content in
+   the file named ‘gettext.html’
+   itself in the local machine.
+$ curl -O http://www.gnu.org/software/ge
+ttext/manual/gettext.html
+
+   Note: When curl has to write
+   the data to the terminal, it
+   disables the Progress Meter, to
+   avoid confusion in printing. We
+   can use ‘>’|’-o’|’-O’ options
+   to move the result to a file.
+
+   Similar to cURL, you can also
+   use wget to download files.
+   Refer to wget examples to
+   understand how to use wget
+   effectively.
+
+3. Fetch Multiple Files at a time
+
+   We can download multiple files
+   in a single shot by specifying
+   the URLs on the command line.
+   Syntax:
+$ curl -O URL1 -O URL2
+
+   The below command will download
+   both index.html and
+   gettext.html and save it in the
+   same name under the current
+   directory.
+$ curl -O http://www.gnu.org/software/ge
+ttext/manual/html_node/index.html -O htt
+p://www.gnu.org/software/gettext/manual/
+gettext.html
+
+   Please note that when we
+   download multiple files from a
+   same sever as shown above, curl
+   will try to re-use the
+   connection.
+
+4. Follow HTTP Location Headers with
+-L option
+
+   By default CURL doesn’t follow
+   the HTTP Location headers. It
+   is also termed as Redirects.
+   When a requested web page is
+   moved to another place, then an
+   HTTP Location header will be
+   sent as a Response and it will
+   have where the actual web page
+   is located.
+
+   For example, when someone types
+   google.com in the browser from
+   India, it will be automatically
+   redirected to ‘google.co.in’.
+   This is done based on the HTTP
+   Location header as shown below.
+$ curl http://www.google.com
+
+<TITLE>302 Moved</TITLE>
+<H1>302 Moved</H1>
+The document has moved
+<A HREF="http://www.google.co.in/">here<
+/A>
+
+   The above output says that the
+   requested document is moved to
+   ‘http://www.google.co.in/’.
+
+   We can insists curl to follow
+   the redirection using -L
+   option, as shown below. Now it
+   will download the
+   google.co.in’s html source
+   code.
+$ curl -L http://www.google.com
+
+5. Continue/Resume a Previous
+Download
+
+   Using curl -C option, you can
+   continue a download which was
+   stopped already for some
+   reason. This will be helpful
+   when you download large files,
+   and the download got
+   interrupted.
+
+   If we say ‘-C -‘, then curl
+   will find from where to start
+   resuming the download. We can
+   also give an offset ‘-C
+   <offset>’. The given offset
+   bytes will be skipped from the
+   beginning for the source file.
+
+   Start a big download using
+   curl, and press Ctrl-C to stop
+   it in between the download.
+$ curl -O http://www.gnu.org/software/ge
+ttext/manual/gettext.html
+##############             20.1%
+
+   Note: -# is used to display a
+   progress bar instead of a
+   progress meter.
+
+   Now the above download was
+   stopped at 20.1%. Using “curl
+   -C -“, we can continue the
+   download from where it left off
+   earlier. Now the download
+   continues from 20.1%.
+curl -C - -O http://www.gnu.org/software
+/gettext/manual/gettext.html
+###############            21.1%
+
+6. Limit the Rate of Data Transfer
+
+   You can limit the amount at
+   which the data gets transferred
+   using –limit-rate option. You
+   can specify the maximum
+   transfer rate as argument.
+$ curl --limit-rate 1000B -O http://www.
+gnu.org/software/gettext/manual/gettext.
+html
+
+   The above command is limiting
+   the data transfer to 1000
+   Bytes/second. curl may use
+   higher transfer rate for short
+   span of time. But on an
+   average, it will come around to
+   1000B/second.
+
+   The following was the progress
+   meter for the above command.
+   You can see that the current
+   speed is near to the 1000
+   Bytes.
+  % Total    % Received % Xferd  Average
+ Speed   Time    Time     Time  Current
+                                 Dload
+Upload   Total   Spent    Left  Speed
+  1 1215k    1 13601    0     0    957
+    0  0:21:40  0:00:14  0:21:26   999
+  1 1215k    1 14601    0     0    960
+    0  0:21:36  0:00:15  0:21:21   999
+  1 1215k    1 15601    0     0    962
+    0  0:21:34  0:00:16  0:21:18   999
+
+7. Download a file only if it is
+modified before/after the given time
+
+   We can get the files that are
+   modified after a particular
+   time using -z option in curl.
+   This will work for both FTP &
+   HTTP.
+$ curl -z 21-Dec-11 http://www.example.c
+om/yy.html
+
+   The above command will download
+   the yy.html only if it is
+   modified later than the given
+   date and time
+$ curl -z -21-Dec-11 http://www.example.
+com/yy.html
+
+   The above command will download
+   the yy.html, if it is modified
+   before than the given date and
+   time.
+
+   Please refer ‘man curl_getdate’
+   for the various syntax
+   supported for the date
+   expression
+
+8. Pass HTTP Authentication in cURL
+
+   Sometime, websites will require
+   a username and password to view
+   the content ( can be done with
+   .htaccess file ). With the help
+   of -u option, we can pass those
+   credentials from cURL to the
+   web server as shown below.
+$ curl -u username:password URL
+
+   Note: By default curl uses
+   Basic HTTP Authentication. We
+   can specify other
+   authentication method using
+   –ntlm | –digest.
+
+9. Download Files from FTP server
+
+   cURL can also be used to
+   download files from FTP
+   servers. If the given FTP path
+   is a directory, by default it
+   will list the files under the
+   specific directory.
+$ curl -u ftpuser:ftppass -O ftp://ftp_s
+erver/public_html/xss.php
+
+   The above command will download
+   the xss.php file from the ftp
+   server and save it in the local
+   directory.
+$ curl -u ftpuser:ftppass -O ftp://ftp_s
+erver/public_html/
+
+   Here, the given URL refers to a
+   directory. So cURL will list
+   all the files and directories
+   under the given URL
+
+   If you are new to FTP/sFTP,
+   refer ftp sftp tutorial for
+   beginners.
+
+10. List/Download using Ranges
+
+   cURL supports ranges to be
+   given in the URL. When a range
+   is given, files matching within
+   the range will be downloaded.
+   It will be helpful to download
+   packages from the FTP mirror
+   sites.
+$ curl   ftp://ftp.uk.debian.org/debian/
+pool/main/[a-z]/
+
+   The above command will list out
+   all the packages from a-z
+   ranges in the terminal.
+
+11. Upload Files to FTP Server
+
+   Curl can also be used to upload
+   files to the FTP server with -T
+   option.
+$ curl -u ftpuser:ftppass -T myfile.txt
+ftp://ftp.testserver.com
+
+   The above command will upload
+   the file named myfile.txt to
+   the FTP server. You can also
+   upload multiple files at a same
+   time using the range
+   operations.
+$ curl -u ftpuser:ftppass -T "{file1,fil
+e2}" ftp://ftp.testserver.com
+
+   Optionally we can use “.” to
+   get the input from STDIN and
+   transfer to the remote.
+$ curl -u ftpuser:ftppass -T - ftp://ftp
+.testserver.com/myfile_1.txt
+
+   The above command will get the
+   input from the user from
+   Standard Input and save the
+   contents in the ftp server
+   under the name ‘myfile_1.txt’.
+
+   You can provide one ‘-T’ for
+   each URL and the pair specifies
+   what to upload where.
+
+12. More Information using Verbose
+and Trace Option
+
+   You can get to know what is
+   happening using the -v option.
+   -v option enable the verbose
+   mode and it will print the
+   details
+curl -v http://google.co.in
+
+   The about command will output
+   the following
+* About to connect() to www.google.co.in
+ port 80 (#0)
+*   Trying 74.125.236.56... connected
+* Connected to www.google.co.in (74.125.
+236.56) port 80 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.21.0 (i486-pc-linux
+-gnu) libcurl/7.21.0 OpenSSL/0.9.8o zlib
+/1.2.3.4 libidn/1.15 libssh2/1.2.6
+> Host: www.google.co.in
+> Accept: */*
+>
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Date: Tue, 10 Apr 2012 11:18:39 GMT
+< Expires: -1
+< Cache-Control: private, max-age=0
+< Content-Type: text/html; charset=ISO-8
+859-1
+< Set-Cookie: PREF=ID=7c497a6b15cc092d:F
+F=0:TM=1334056719:LM=1334056719:S=UORpBw
+xFmTRkbXLj; expires=Thu, 10-Apr-2014 11:
+18:39 GMT; path=/; domain=.google.co.in
+.
+.
+
+   If you need more detailed
+   information then you can use
+   the –trace option. The trace
+   option will enable a full trace
+   dump of all incoming/outgoing
+   data to the given file
+=> Send header, 169 bytes (0xa9)
+0000: 47 45 54 20 2f 20 48 54 54 50 2f 3
+1 2e 31 0d 0a GET / HTTP/1.1..
+0010: 55 73 65 72 2d 41 67 65 6e 74 3a 2
+0 63 75 72 6c User-Agent: curl
+..
+0060: 2e 32 2e 33 2e 34 20 6c 69 62 69 6
+4 6e 2f 31 2e .2.3.4 libidn/1.
+0070: 31 35 20 6c 69 62 73 73 68 32 2f 3
+1 2e 32 2e 36 15 libssh2/1.2.6
+0080: 0d 0a 48 6f 73 74 3a 20 77 77 77 2
+e 67 6f 6f 67 ..Host: www.goog
+0090: 6c 65 2e 63 6f 2e 69 6e 0d 0a 41 6
+3 63 65 70 74 le.co.in..Accept
+00a0: 3a 20 2a 2f 2a 0d 0a 0d 0a
+              : */*....
+== Info: HTTP 1.0, assume close after bo
+dy
+<= Recv header, 17 bytes (0x11)
+0000: 48 54 54 50 2f 31 2e 30 20 32 30 3
+0 20 4f 4b 0d HTTP/1.0 200 OK.
+0010: 0a
+
+   This verbose and trace option
+   will come in handy when curl
+   fails due to some reason and we
+   don’t know why.
+
+13. Get Definition of a Word using
+DICT Protocol
+
+   You can use cURL to get the
+   definition for a word with the
+   help of DICT protocol. We need
+   to pass a Dictionary Server URL
+   to it.
+$ curl dict://dict.org/d:bash
+
+   The above command will list the
+   meaning for bash as follows
+151 "Bash" gcide "The Collaborative Inte
+rnational Dictionary of English v.0.48"
+Bash \Bash\, v. t. [imp. & p. p. {Bashed
+}; p. pr. & vb. n.
+   {Bashing}.] [Perh. of imitative origi
+n; or cf. Dan. baske to
+   strike, bask a blow, Sw. basa to beat
+, bas a beating.]
+   To strike heavily; to beat; to crush.
+ [Prov. Eng. & Scot.]
+   --Hall Caine.
+   [1913 Webster]
+
+         Bash her open with a rock.
+          --Kipling.
+   [Webster 1913 Suppl.]
+.
+151 "Bash" gcide "The Collaborative Inte
+rnational Dictionary of English v.0.48"
+Bash \Bash\, n.
+   1. a forceful blow, especially one th
+at does damage to its
+      target.
+      [PJC]
+.
+.
+
+   Now you can see that it uses
+   “The Collaborative
+   International Dictionary of
+   English”. There are many
+   dictionaries are available. We
+   can list all the dictionaries
+   using
+$ curl dict://dict.org/show:db
+
+jargon "The Jargon File (version 4.4.7,
+29 Dec 2003)"
+foldoc "The Free On-line Dictionary of C
+omputing (26 July 2010)"
+easton "Easton's 1897 Bible Dictionary"
+hitchcock "Hitchcock's Bible Names Dicti
+onary (late 1800's)"
+bouvier "Bouvier's Law Dictionary, Revis
+ed 6th Ed (1856)"
+
+   Now in-order to find the actual
+   meaning of Bash in computer we
+   can search for bash in “foldoc”
+   dictionary as follows
+$ curl dict://dict.org/d:bash:foldoc
+
+   The result will be,
+bash
+
+   Bourne Again SHell.  {GNU}'s {command
+ interpreter} for {Unix}.
+   Bash is a {Posix}-compatible {shell}
+with full {Bourne shell}
+   syntax, and some {C shell} commands b
+uilt in.  The Bourne
+   Again Shell supports {Emacs}-style co
+mmand-line editing, job
+   control, functions, and on-line help.
+  Written by Brian Fox of
+   {UCSB}.
+
+   For more details with regard to
+   DICT please read RFC2229
+
+14. Use Proxy to Download a File
+
+   We can specify cURL to use
+   proxy to do the specific
+   operation using -x option. We
+   need to specify the host and
+   port of the proxy.
+$ curl -x proxysever.test.com:3128 http:
+//google.co.in
+
+15. Send Mail using SMTP Protocol
+
+   cURL can also be used to send
+   mail using the SMTP protocol.
+   You should specify the
+   from-address, to-address, and
+   the mailserver ip-address as
+   shown below.
+$ curl --mail-from blah@test.com --mail-
+rcpt foo@test.com smtp://mailserver.com
+
+   Once the above command is
+   entered, it will wait for the
+   user to provide the data to
+   mail. Once you’ve composed your
+   message, type . (period) as the
+   last line, which will send the
+   email immediately.
+Subject: Testing
+This is a test mail
+.
+
+   Tweet
+
+   IFRAME:
+   https://www.facebook.com/plugin
+   s/like.php?href=https%3A%2F%2Fw
+   ww.thegeekstuff.com%2F2012%2F04
+   %2Fcurl-examples%2F&send=false&
+   layout=button_count&width=450&s
+   how_faces=false&action=like&col
+   orscheme=light&font&height=21
+
+   > Add your comment
+
+If you enjoyed this article, you
+might also like..
+
+    1. 50 Linux Sysadmin Tutorials
+    2. 50 Most Frequently Used
+       Linux Commands (With
+       Examples)
+    3. Top 25 Best Linux
+       Performance Monitoring and
+       Debugging Tools
+    4. Mommy, I found it! – 15
+       Practical Linux Find
+       Command Examples
+    5. Linux 101 Hacks 2nd Edition
+       eBook  Linux 101 Hacks Book
+
+     * Awk Introduction – 7 Awk
+       Print Examples
+     * Advanced Sed Substitution
+       Examples
+     * 8 Essential Vim Editor
+       Navigation Fundamentals
+     * 25 Most Frequently Used
+       Linux IPTables Rules
+       Examples
+     * Turbocharge PuTTY with 12
+       Powerful Add-Ons
+
+   Bash 101 Hacks Book Sed and Awk
+   101 Hacks Book Nagios Core 3
+   Book Vim 101 Hacks Book
+
+   { 34 comments… add one }
+     * Philippe Petrinko April 11,
+       2012, 3:36 am
+       Hi
+       Great topic, informative
+       and useful to me.
+       Typo here, I think:
+       “If the given FTP patch is
+       a directory”
+       __patch__ should be: path
+       — Philippe
+       Link
+     * Alan April 11, 2012, 4:54
+       am
+       “6. Limit the Date of Data
+       Transfer”
+       should not be
+       “6. Limit the Rate of Data
+       Transfer” ?
+       Link
+     * Ashwini Kumar April 11,
+       2012, 5:24 am
+       this command gives me below
+       error ??
+       curl –mail-from
+       blah@test.com –mail-rcpt
+       foo@test.com
+       smtp://mailserver.com
+       curl: (7) couldn’t connect
+       to host
+       Link
+     * dariusz April 11, 2012,
+       9:48 am
+       Thank you for this article
+       I was surprised that curl
+       can send emails and upload
+       files to ftp server.
+       I will be looking now to
+       use it in my scripts to
+       upload files to SFTP server
+       where password
+       authentication is required.
+       many thanks
+       Link
+     * Lakshmanan Ganapathy April
+       11, 2012, 10:40 pm
+       @Ashwini Kumar
+       What is the exact command
+       that you are trying to
+       execute?
+       curl –mail-from
+       blah@test.com –mail-rcpt
+       foo@test.com
+       smtp://mailserver.com
+       You need to replace the
+       ‘mailserver.com’ with the
+       actual mail server in your
+       office/home.
+       Same way mail-from and rcpt
+       also need to be changed
+       appropriately
+       If your mail server IP is
+       192.168.1.1 and we both are
+       in same office then the
+       following will work
+       curl –mail-from
+       lakshmanan@office.co.in
+       –mail-rcpt
+       aswini@office.co.in
+       smtp://192.168.1.1
+       Link
+     * bells April 15, 2012, 5:38
+       am
+       bells@bells-VirtualBox ~ $
+       curl_getdate
+       curl_getdate: command not
+       found
+       bells@bells-VirtualBox ~ $
+       man curl_getdate
+       No manual entry for
+       curl_getdate
+       bells@bells-VirtualBox ~ $
+       curl
+       curl: try ‘curl –help’ or
+       ‘curl –manual’ for more
+       information
+       why my ubuntu have not
+       curl_getdate command??
+       thank you!!
+       Link
+     * Lakshmanan Ganapathy April
+       16, 2012, 2:38 am
+       @bells
+       cURL comes in 2 form. Once
+       is ‘curl’ command and
+       another one is ‘libcurl’ (
+       cURL library ). The
+       curl_getdate is a function
+       in that library. Ensure
+       that you have installed
+       libcurl package.
+       Link
+     * sushena April 30, 2012,
+       2:10 am
+       Cool stuff with good info .
+       am surprised abt mail
+       sending option, will work
+       on it, thanks
+       Link
+     * yunus June 27, 2012, 9:19
+       pm
+       Thank you for this article.
+       I am using curl in my
+       script to posting a text to
+       our SMS gateway as below.
+       curl
+       “http:///send_sms.php?usern
+       ame=&password=&phoneno=&tex
+       t=”
+       For the above, I extract
+       and store the email body to
+       a variable to send out
+       messages. But the curl
+       sends out only a first word
+       in the variable, anything
+       after space it ignores. If
+       replace the spaces with +
+       symbols, it works. Is it
+       possible in curl itself to
+       do this conversion
+       (replacing space with +
+       symbol).
+       Please advise me on this.
+       Regards
+       Yunus
+       Link
+     * Jalal Hajigholamali July 6,
+       2012, 8:48 am
+       Hi,
+       Very nice article
+       Link
+     * Narendren August 16, 2012,
+       12:20 pm
+       Hi guyz… how to get the
+       total time spent for a page
+       to load? I want to check
+       how much time it is taking
+       for a page to load?
+       Link
+     * Shahuraj Garade October 1,
+       2012, 3:56 am
+       How to download file from
+       FTPS? with port 990?
+       Link
+     * Dee Wortman December 31,
+       2012, 12:39 pm
+       WRT #11 above, is there a
+       way to use a wildcard in
+       order to FTP files using a
+       script. The problem I have
+       is the files I need to
+       transfer have their names
+       changed because part of the
+       file name is the date. Data
+       is recorded for 24 hours
+       and at midnight a new file
+       is created with the same
+       name but with the day
+       incremented by a day.
+       (i.e. previous filename
+       “file_12-12-2012.txt” and
+       new filename
+       “file_12-13-2012.txt” )
+       As you know by using just
+       FTP in UNIX, for example,
+       it would be “mput
+       file_12-*-2012.txt”
+       Thanks,
+       Dee
+       Link
+     * rama March 14, 2013, 8:54
+       am
+       what is the use of curl -sk
+       ,
+       Link
+     * Veer June 25, 2013, 6:33 am
+       Hi
+       can some one explain the
+       below syntax to me :
+       STATUS_CODE=`curl –output
+       /dev/null –silent –head
+       –write-out ‘%{http_code}\n’
+       $next`
+       # If you want to set a
+       timeout then add –max-time
+       15, here 15 is 15seconds
+       Thanks a lot in advance.
+       Thanks in advance 🙂
+       Link
+     * Girish August 26, 2013,
+       3:30 am
+       Hi I am using the curl
+       script to download the file
+       from the URL. Below is the
+       code I am using to do this.
+       curl -o
+       /u04/DATALOAD/VEGAS/IN/GAME
+       S_27072013.csv
+       “https://some-url”
+       I am executing the above
+       curl script in putty. I am
+       getting the error as below
+       curl: (52) SSL read:
+       error:00000000:lib(0):func(
+       0):reason(0), errno 104
+       The same code is executing
+       fine for the smaller file
+       size. Even someties works
+       good for the above command
+       as well. But some time I
+       get this error. Can anyone
+       help me in this to get this
+       up and running always
+       without any failures. I am
+       new to this any help on
+       this is much appreciated.
+       Link
+     * Radhika August 31, 2013,
+       8:05 pm
+       Hi there,
+       Could any help me resolve
+       this issue. Could not
+       resolve host.
+       while read line;do curl -L
+       $line > med/`echo $line |
+       sed “s/\//_/g”`.html ; done
+       < abc_results.txt
+       % Total % Received % Xferd
+       Average Speed Time Time
+       Time Current
+       Dload Upload Total Spent
+       Left Speed
+       0 0 0 0 0 0 0 0 –:–:–
+       0:00:04 –:–:– 0
+       curl: (6) Could not resolve
+       host: www10.nytimes.com;
+       nodename nor servname
+       provided, or not known
+       % Total % Received % Xferd
+       Average Speed Time Time
+       Time Current
+       Dload Upload Total Spent
+       Left Speed
+       100 19053 100 19053 0 0
+       10667 0 0:00:01 0:00:01
+       –:–:– 38029
+       Many thanks,
+       Radhika
+       Link
+     * Philippe Petrinko September
+       1, 2013, 2:41 am
+       @Radhika
+       To debug your problem:
+       1) Try yours [curl]
+       commands by hand. Try
+       several web sites.
+       2) if it works, try by hand
+       the whole commands included
+       in your [while] loop.
+       3) if it works, try your
+       [while] line, but add some
+       [echo] commands to see what
+       is going to be executed.
+       That should do the trick!
+       –P
+       Link
+     * Radhika September 1, 2013,
+       4:39 am
+       @Philippe
+       Thank you the suggestion.
+       It is only with this web
+       site I have an issue. I am
+       able to get for the rest.
+       As you suggested I shall
+       try while loop. Thank you
+       for your time.
+       Link
+     * Ross Gailer September 4,
+       2013, 12:09 am
+       Great article.
+       Do you know if there is any
+       way to call the next page
+       as defined in the header
+       when a file is paginated?
+       The url for rel=’next’ just
+       has a page=2 on it, but
+       when I execute this I get a
+       401 authentication error
+       even with the access_token
+       added.
+       The command I am issuing
+       for the first page is curl
+       -k
+       https://XX.XXX.XXX/api/v1/a
+       ccounts/1/users?access_toke
+       n=XXXX
+       The response to the curl
+       -kI responds with Link: ;
+       rel=”next”,
+       Link
+     * Chandrashekhar Gawade
+       February 17, 2014, 8:58 am
+       I read all content of this
+       page, this is the excellent
+       Link
+     * Dipak March 12, 2014, 1:12
+       am
+       I’m new user for curl tool:
+       Can some one help me to use
+       this command as below:
+       I want to download all
+       my.csv files from my
+       abc@gmail.com email inbox ?
+       How this would be possible
+       using curl ? any one any
+       idea would be great help.
+       Thanks in advance.
+       Dipak J
+       Link
+     * eisman October 15, 2014,
+       7:44 am
+       Can you tell me what the
+       syntax is for uploading a
+       file with curl using SFTP
+       server and creating a
+       directory in the same
+       command line?
+       I tried it with
+       –ftp-create-dirs and also
+       with using the -o to define
+       the new filename on the
+       sftp server. I noticed that
+       the syntax is very strict
+       in use.
+       Link
+     * Hafiz Muhammad Shafiq
+       October 21, 2014, 12:53 am
+       A good guide
+       Link
+     * Hafiz Muhammad Shafiq
+       October 21, 2014, 12:54 am
+       A good guide for basics
+       Link
+     * Dhawan Gupta December 7,
+       2014, 2:58 am
+       What will happen if I use a
+       normal word instead of a
+       url with -O in curl?
+       e.g. what will happen if I
+       type following command? :
+       curl -O http://url/test.txt
+       -O original
+       Link
+     * Sushil Pandey May 11, 2015,
+       6:03 am
+       Great article.
+       I need some guidance
+       regarding curl.
+       I was transferring file
+       through IPSEC ip address,
+       file is transferring
+       successfully.But during
+       transferring the file, the
+       IPSEC ip address re
+       -established which leads to
+       kill the curl command.
+       I again re enter the same
+       command with updated IPSEC
+       ip address, but now file is
+       not transferring. I am not
+       seeing error message.
+       Please help me out here.I
+       am new to IPSEC & curl.
+       Thanks in advance.
+       Link
+     * STM July 27, 2015, 3:55 am
+       Great article..
+       Thank you.
+       Link
+     * peoce September 10, 2015,
+       10:58 am
+       great article ,it is helps
+       me a lot while learn linux
+       Link
+     * Shabbir September 18, 2015,
+       3:25 pm
+       Hi All!
+       I want to know how to save
+       the PDFs from website using
+       curl in shell script.
+       I am newbie to this “cURL”
+       🙂
+       Thanks!!
+       Link
+     * hvt December 9, 2015, 3:38
+       am
+       Hi all,
+       I want to copy all file in
+       folder, so i using scirpt
+       below with loop for, It’s
+       ok, but have a problem
+       about authentication with
+       every loop file so make for
+       processing slower. How to
+       only save session one time
+       :
+       #!bin/sh
+       for entry in /test/*
+       do
+       curl -T $entry -u
+       username:pass
+       ftp://path/folder
+       done
+       Thanks.
+       Link
+     * dacen January 13, 2016,
+       10:00 pm
+       nice article. I am fresh in
+       *nix area.
+       also am going to try what
+       cURL can help to speed
+       day-by-day job in windows.
+       thanks for sharing ~ cheers
+       Link
+     * Bhavuk May 10, 2016, 3:20
+       am
+       Nice article.. Thanks
+       Link
+     * Brian May 23, 2016, 8:45 am
+       The ftp directory listing
+       feature doesn’t seem to be
+       available on OS X:
+       $ curl -O
+       ftp://ftp.ncbi.nih.gov/pub/
+       taxonomy/accession2taxid/
+       curl: Remote file name has
+       no length!
+       curl: try ‘curl –help’ or
+       ‘curl –manual’ for more
+       information
+       Link
+
+   Cancel reply
+
+   Leave a Comment
+
+   Name ____________________
+
+   Email ____________________
+
+   Website ____________________
+
+   Comment
+   _______________________________
+   _______________________________
+   _______________________________
+   _______________________________
+   _______________________________
+   _______________________________
+
+   Submit
+
+   [ ] Notify me of followup
+   comments via e-mail
+
+   Next post: EMC Navisphere – How
+   to Create Raid Group and LUN on
+   CLARiiON
+
+   Previous post: Introduction to
+   Linux IP Routing Fundamentals
+   (Part 1)
+
+   RSS  |  Email  |  Twitter  |
+   Facebook  |  Google+
+   ______________________________
+   Search
+   [INS: :INS]
+
+   EBOOKS
+     * Linux 101 Hacks Book  Linux
+       101 Hacks 2nd Edition eBook
+       - Practical Examples to
+       Build a Strong Foundation
+       in Linux
+     * Bash 101 Hacks eBook - Take
+       Control of Your Bash
+       Command Line and Shell
+       Scripting
+     * Sed and Awk 101 Hacks eBook
+       - Enhance Your UNIX / Linux
+       Life with Sed and Awk
+     * Vim 101 Hacks eBook -
+       Practical Examples for
+       Becoming Fast and
+       Productive in Vim Editor
+     * Nagios Core 3 eBook -
+       Monitor Everything, Be
+       Proactive, and Sleep Well
+
+   IFRAME:
+   //www.facebook.com/plugins/like
+   box.php?href=https%3A%2F%2Fwww.
+   facebook.com%2Fthegeekstuff&wid
+   th&height=258&colorscheme=light
+   &show_faces=true&header=false&s
+   tream=false&show_border=true
+
+   POPULAR POSTS
+     * 15 Essential Accessories
+       for Your Nikon or Canon
+       DSLR Camera
+     * 12 Amazing and Essential
+       Linux Books To Enrich Your
+       Brain and Library
+     * 50 UNIX / Linux Sysadmin
+       Tutorials
+     * 50 Most Frequently Used
+       UNIX / Linux Commands (With
+       Examples)
+     * How To Be Productive and
+       Get Things Done Using GTD
+     * 30 Things To Do When you
+       are Bored and have a
+       Computer
+     * Linux Directory Structure
+       (File System Structure)
+       Explained with Examples
+     * Linux Crontab: 15 Awesome
+       Cron Job Examples
+     * Get a Grip on the Grep! –
+       15 Practical Grep Command
+       Examples
+     * Unix LS Command: 15
+       Practical Examples
+     * 15 Examples To Master Linux
+       Command Line History
+     * Top 10 Open Source Bug
+       Tracking System
+     * Vi and Vim Macro Tutorial:
+       How To Record and Play
+     * Mommy, I found it! -- 15
+       Practical Linux Find
+       Command Examples
+     * 15 Awesome Gmail Tips and
+       Tricks
+     * 15 Awesome Google Search
+       Tips and Tricks
+     * RAID 0, RAID 1, RAID 5,
+       RAID 10 Explained with
+       Diagrams
+     * Can You Top This? 15
+       Practical Linux Top Command
+       Examples
+     * Top 5 Best System
+       Monitoring Tools
+     * Top 5 Best Linux OS
+       Distributions
+     * How To Monitor Remote Linux
+       Host using Nagios 3.0
+     * Awk Introduction Tutorial –
+       7 Awk Print Examples
+     * How to Backup Linux? 15
+       rsync Command Examples
+     * The Ultimate Wget Download
+       Guide With 15 Awesome
+       Examples
+     * Top 5 Best Linux Text
+       Editors
+     * Packet Analyzer: 15 TCPDUMP
+       Command Examples
+     * The Ultimate Bash Array
+       Tutorial with 15 Examples
+     * 3 Steps to Perform SSH
+       Login Without Password
+       Using ssh-keygen &
+       ssh-copy-id
+     * Unix Sed Tutorial: Advanced
+       Sed Substitution Examples
+     * UNIX / Linux: 10 Netstat
+       Command Examples
+     * The Ultimate Guide for
+       Creating Strong Passwords
+     * 6 Steps to Secure Your Home
+       Wireless Network
+     * Turbocharge PuTTY with 12
+       Powerful Add-Ons
+
+   CATEGORIES
+     * Linux Tutorials
+     * Vim Editor
+     * Sed Scripting
+     * Awk Scripting
+     * Bash Shell Scripting
+     * Nagios Monitoring
+     * OpenSSH
+     * IPTables Firewall
+     * Apache Web Server
+     * MySQL Database
+     * Perl Programming
+     * Google Tutorials
+     * Ubuntu Tutorials
+     * PostgreSQL DB
+     * Hello World Examples
+     * C Programming
+     * C++ Programming
+     * DELL Server Tutorials
+     * Oracle Database
+     * VMware Tutorials
+
+About The Geek Stuff
+
+   Linux 101 Hacks Book My name is
+   Ramesh Natarajan. I will be
+   posting instruction guides,
+   how-to, troubleshooting tips
+   and tricks on Linux, database,
+   hardware, security and web. My
+   focus is to write articles that
+   will either teach you or help
+   you resolve a problem. Read
+   more about Ramesh Natarajan and
+   the blog.
+
+Contact Us
+
+   Email Me : Use this Contact
+   Form to get in touch me with
+   your comments, questions or
+   suggestions about this site.
+   You can also simply drop me a
+   line to say hello!.
+   Follow us on Google+
+   Follow us on Twitter
+   Become a fan on Facebook
+
+Support Us
+
+   Support this blog by purchasing
+   one of my ebooks.
+   Bash 101 Hacks eBook
+   Sed and Awk 101 Hacks eBook
+   Vim 101 Hacks eBook
+   Nagios Core 3 eBook
+
+   Copyright © 2008–2018 Ramesh
+   Natarajan. All rights reserved
+   | Terms of Service

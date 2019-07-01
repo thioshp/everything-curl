@@ -1,0 +1,99 @@
+   Docs Overview CA Extract HTTP
+   Cookies HTTP/2 SSL Certs SSL
+   libs compared
+   curl / Docs / Protocol docs /
+   CA Extract
+
+CA certificates extracted from
+Mozilla
+
+   Related:
+   SSL Certs
+
+   The Mozilla CA certificate
+   store in PEM format (around
+   250KB uncompressed):
+
+   cacert.pem
+
+   This bundle was generated at
+   Wed Dec 5 04:12:10 2018 GMT .
+
+   This PEM file contains the
+   datestamp of the conversion and
+   we only make a new conversion
+   if there's a change in either
+   the script or the source file.
+   This service checks for updates
+   every day. Here's the sha256sum
+   of the current PEM file.
+
+Older CA file revisions per date of
+appearance
+
+          Date    Certificates
+       2018-12-05     128
+       2018-10-17     129
+       2018-06-20     132
+       2018-03-07     133
+       2018-01-17     138
+       2017-09-20     143
+       2017-06-07     155
+       2017-01-18     158
+       2016-11-02     158
+       2016-09-14     157
+
+Missing Name Constraints
+
+   The converted PEM file only
+   contains the digital signatures
+   for CAs. Several of those CAs
+   have constraints in Firefox
+   (and other browsers) to only be
+   allowed for certain domains and
+   other similar additional
+   conditions. Those constraints
+   are thus not brought along in
+   this cacert file!
+
+CA certificate store license
+
+   The PEM file is only a
+   converted version of the
+   original one and thus it is
+   licensed under the same license
+   as the Mozilla source file: MPL
+   2.0
+
+Automated downloads from here
+
+   We don't mind you downloading
+   the PEM file from us in an
+   automated fashion, but please
+   don't do it more often than
+   once per day. It is only
+   updated once every few months
+   anyway.
+
+   A suitable curl command line to
+   only download it when it has
+   changed:
+  curl --remote-name --time-cond cacert.
+pem https://curl.haxx.se/ca/cacert.pem
+
+The conversion script mk-ca-bundle
+
+   The mk-ca-bundle tool converts
+   Mozilla's certificate store to
+   PEM format, suitable for
+   (lib)curl and others.
+
+Convert from your local Firefox
+installation
+
+   You can also extract the ca
+   certs off your Firefox
+   installation, if you just have
+   the 'certutil' tool installed
+   and run the firefox-db2pem.sh
+   script!
